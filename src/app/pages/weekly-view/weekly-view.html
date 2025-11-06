@@ -32,7 +32,10 @@
                       class="cell-focus-wrapper"
                       tabindex="0"
                       role="button"
-                      aria-label="{{ 'meal.aria.meal' | translate:{ type: (mealLabel(m.meal_type) | translate), date: m.date } }}"
+                      aria-label="{{
+                        'meal.aria.meal'
+                          | translate : { type: (mealLabel(m.meal_type) | translate), date: m.date }
+                      }}"
                       (keydown)="onCellKeydown($event, rowIdx, colIdx)"
                     >
                       <app-meal-card
@@ -48,7 +51,9 @@
                       "
                       class="swap-ui"
                     >
-                      <label for="swap-select-{{ m.date }}-{{ m.meal_type }}">{{ 'swap.label' | translate }}</label>
+                      <label for="swap-select-{{ m.date }}-{{ m.meal_type }}">{{
+                        'swap.label' | translate
+                      }}</label>
                       <select
                         id="swap-select-{{ m.date }}-{{ m.meal_type }}"
                         (change)="confirmSwap($any($event.target).value)"

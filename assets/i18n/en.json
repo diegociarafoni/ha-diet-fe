@@ -16,12 +16,12 @@
   "message.destination_same_week": "Destination must be in the same week",
   "message.swap_done": "Swap completed",
   "message.insufficient_permissions": "Insufficient permissions",
-  "message.error_swap": "Error while swapping"
-  ,"meal.aria.meal":"Meal {type} of {date}",
-  "swap.label":"Swap with:",
-  "swap.select_placeholder":"select...",
-  "swap.cancel":"Cancel",
-  "table.past":"Past",
-  "no_week_loaded":"No week loaded (select a profile).",
-  "prompt.enter_destination":"Enter destination date (YYYY-MM-DD) — must be later in the same week"
+  "message.error_swap": "Error while swapping",
+  "meal.aria.meal": "Meal {type} of {date}",
+  "swap.label": "Swap with:",
+  "swap.select_placeholder": "select...",
+  "swap.cancel": "Cancel",
+  "table.past": "Past",
+  "no_week_loaded": "No week loaded (select a profile).",
+  "prompt.enter_destination": "Enter destination date (YYYY-MM-DD) — must be later in the same week"
 }

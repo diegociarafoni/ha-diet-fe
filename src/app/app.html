@@ -1,7 +1,7 @@
 <header class="app-header">
   <div class="app-title">{{ 'app.title' | translate }}</div>
   <app-profile-selector></app-profile-selector>
-  <div class="lang-select">
+  <div class="lang-select" *ngIf="!inHomeAssistant">
     <select (change)="setLang($any($event.target).value)">
       <option value="it">IT</option>
       <option value="en">EN</option>
