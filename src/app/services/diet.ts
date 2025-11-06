@@ -23,12 +23,14 @@ export class DietService {
     }
 
     // assicurati che la connessione sia pronta, poi carica capabilities
-    this.ws.waitUntilConnected(5000)
-      .then(() => this.loadCapabilities())
-      .catch((err) => {
-        // non bloccante: loggare e restare in stato vuoto
-        console.warn("DietService: impossibile ottenere capabilities all'avvio", err);
-      });
+    (async () => {
+      const ok = await this.ws.waitUntilConnected(5000);
+      if (ok) {
+        this.loadCapabilities();
+      } else {
+        console.warn('DietService: impossibile ottenere capabilities all\'avvio (WS non connesso)');
+      }
+    })();
   }
 
   connect() { this.ws.connect(); }

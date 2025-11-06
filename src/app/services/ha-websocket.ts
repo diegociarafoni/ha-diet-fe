@@ -43,23 +43,27 @@ export class HaWebsocketService {
    * Risolve quando lo stato diventa 'connected' oppure rigetta dopo timeout.
    * Utile per aspettare l'autenticazione all'avvio prima di effettuare chiamate.
    */
-  async waitUntilConnected(timeoutMs = 5000): Promise<void> {
-    if (this.connectionState$.value === 'connected') return;
-    return new Promise<void>((resolve, reject) => {
+  /**
+   * Wait until the WS reports `connected`.
+   * Returns `true` if connected within timeout, otherwise `false`.
+   */
+  async waitUntilConnected(timeoutMs = 5000): Promise<boolean> {
+    if (this.connectionState$.value === 'connected') return true;
+    return new Promise<boolean>((resolve) => {
       const to = setTimeout(() => {
         sub.unsubscribe();
-        reject(new Error('Timeout waiting for WS connected'));
+        resolve(false);
       }, timeoutMs);
       const sub = this.connectionState$.subscribe((s) => {
         if (s === 'connected') {
           clearTimeout(to);
           sub.unsubscribe();
-          resolve();
+          resolve(true);
         }
         if (s === 'error') {
           clearTimeout(to);
           sub.unsubscribe();
-          reject(new Error('WebSocket in error state'));
+          resolve(false);
         }
       });
     });
