@@ -13,6 +13,9 @@
       badge
     }}</span>
   </div>
+  <div *ngIf="showSwipeHint" class="swipe-hint" aria-hidden="true">
+    Scorri a sinistra per scambiare ▶
+  </div>
   <div class="meal-actions">
     <button (click)="doChoose('proposed')" [disabled]="!canWrite" [attr.aria-disabled]="!canWrite">
       Proposto

@@ -17,3 +17,7 @@
 .meal-actions button[disabled]{opacity:0.5; cursor:not-allowed}
 
 .meal-card{will-change:transform}
+
+/* swipe hint */
+.swipe-hint{position:absolute;right:8px;top:8px;background:rgba(0,0,0,0.06);padding:6px 10px;border-radius:999px;font-size:0.8rem;color:#222;pointer-events:none;opacity:0.95}
+.meal-card{position:relative}

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -33,6 +33,9 @@ export class MealCard {
   doSwap() { this.requestSwap.emit(); }
   doCopy() { this.requestCopy.emit(); }
 
+  // hint for swipe discoverability
+  showSwipeHint = false;
+
   // --- swipe handling (pointer events) ---
   private pointerId: number | null = null;
   private startX = 0;
@@ -48,6 +51,11 @@ export class MealCard {
     this.isSwiping = false;
     // capture pointer so we continue to receive moves
     try { (ev.target as Element).setPointerCapture(this.pointerId); } catch (e) {}
+    // dismiss hint on first interaction
+    if (this.showSwipeHint) {
+      this.showSwipeHint = false;
+      try { localStorage.setItem('ha-diet-swipe-hint-dismissed', '1'); } catch (e) {}
+    }
   }
 
   onPointerMove(ev: PointerEvent) {
@@ -93,6 +101,18 @@ export class MealCard {
     this.startY = 0;
     this.isSwiping = false;
     this.swipeTransform = '';
+  }
+
+  ngOnInit(): void {
+    try {
+      const dismissed = localStorage.getItem('ha-diet-swipe-hint-dismissed');
+      if (!dismissed) {
+        this.showSwipeHint = true;
+        setTimeout(() => { this.showSwipeHint = false; try { localStorage.setItem('ha-diet-swipe-hint-dismissed', '1'); } catch (e) {} }, 4000);
+      }
+    } catch (e) {
+      // ignore localStorage errors
+    }
   }
 }
 

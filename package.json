@@ -8,6 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test --watch=false",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadlessNoSandbox --single-run",
+    "package:ha": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/package-ha.ps1",
     "serve:ssr:ha-diet-fe": "node dist/ha-diet-fe/server/server.mjs"
   },
   "prettier": {
