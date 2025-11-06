@@ -1,1 +1,12 @@
-<router-outlet />
+<header class="app-header">
+  <div class="app-title">HA Diet</div>
+  <app-profile-selector></app-profile-selector>
+</header>
+
+<main class="app-main">
+  <router-outlet></router-outlet>
+</main>
+
+<div class="toasts" aria-live="polite">
+  <div *ngFor="let t of toasts$ | async" class="toast">{{ t.message }}</div>
+</div>
