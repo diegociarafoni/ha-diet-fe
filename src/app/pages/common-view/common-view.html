@@ -4,7 +4,8 @@
       <input
         type="checkbox"
         [checked]="selected.includes(p.profile_id)"
-        (change)="toggleProfile(p.profile_id, $event.target.checked)"
+        (change)="toggleProfile(p.profile_id, $any($event.target).checked)"
+        aria-label="Seleziona profilo {{ p.display_name }}"
       />
       {{ p.display_name }}
     </label>

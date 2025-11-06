@@ -19,6 +19,8 @@ export class WeeklyView implements OnInit, OnDestroy {
   currentMondayISO = this.getMondayISO(new Date());
   // swap state: holds the meal currently being swapped and candidate target dates
   swapState: { meal?: any; candidates?: string[] } = {};
+  // ordered meal types for rows and labels
+  mealTypes = ['breakfast', 'lunch', 'snack_am', 'snack_pm', 'dinner'];
 
   constructor(private diet: DietService, private toast: ToastService) {}
 
@@ -59,6 +61,35 @@ export class WeeklyView implements OnInit, OnDestroy {
     return !!p?.can_write;
   }
 
+  mealLabel(type: string) {
+    const map: Record<string,string> = {
+      breakfast: 'Colazione',
+      lunch: 'Pranzo',
+      snack_am: 'Spuntino AM',
+      snack_pm: 'Spuntino PM',
+      dinner: 'Cena'
+    };
+    return map[type] ?? type;
+  }
+
+  onCellKeydown(ev: KeyboardEvent, row: number, col: number) {
+    // arrow navigation between cells: left/right/up/down
+    const key = ev.key;
+    let targetRow = row;
+    let targetCol = col;
+    const rows = this.mealTypes.length;
+    const cols = this.week?.days?.length ?? 0;
+    if (key === 'ArrowLeft') targetCol = Math.max(0, col - 1);
+    else if (key === 'ArrowRight') targetCol = Math.min(cols - 1, col + 1);
+    else if (key === 'ArrowUp') targetRow = Math.max(0, row - 1);
+    else if (key === 'ArrowDown') targetRow = Math.min(rows - 1, row + 1);
+    else return;
+    ev.preventDefault();
+    const id = `cell-${targetRow}-${targetCol}`;
+    const el = document.getElementById(id) as HTMLElement | null;
+    if (el) el.focus();
+  }
+
   async onSwap(meal: any) {
     const pid = this.diet.getActiveProfileId();
   if (!pid) { this.toast.show('Nessun profilo attivo'); return; }
@@ -87,6 +118,9 @@ export class WeeklyView implements OnInit, OnDestroy {
   }
 
   startSwap(meal: any) {
+    // guard: only allow starting swap when profile can write
+    if (!this.canWrite) { this.toast.show('Permessi insufficienti per effettuare scambi'); return; }
+
     // compute candidate dates: days after meal.date in the same week (Monday..Sunday)
     const weekStart = new Date(this.currentMondayISO);
     const candidates: string[] = [];
@@ -97,6 +131,14 @@ export class WeeklyView implements OnInit, OnDestroy {
       if (iso > meal.date) candidates.push(iso);
     }
     this.swapState = { meal, candidates };
+    // focus the newly created select so keyboard users can act immediately
+    setTimeout(() => {
+      try {
+        const id = `swap-select-${meal.date}-${meal.meal_type}`;
+        const el = document.getElementById(id) as HTMLElement | null;
+        el?.focus();
+      } catch (e) { /* ignore */ }
+    }, 0);
   }
 
   async confirmSwap(targetDate: string) {

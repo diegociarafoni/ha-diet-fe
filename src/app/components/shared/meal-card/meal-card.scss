@@ -1,5 +1,19 @@
-.meal-card{border:1px solid rgba(0,0,0,0.06);padding:.5rem;border-radius:.375rem}
+.meal-card{border:1px solid rgba(0,0,0,0.06);padding:.5rem;border-radius:.375rem;transition:transform 160ms ease}
 .meal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
 .meal-title{font-weight:600}
 .meal-badge{background:#eee;padding:.15rem .4rem;border-radius:.25rem;font-size:.75rem}
-.meal-actions button{margin-right:.25rem;padding:.25rem .5rem;border-radius:.25rem;border:1px solid rgba(0,0,0,0.08);background:#fff}
+.meal-actions button{margin-right:.25rem;padding:.5rem .75rem;border-radius:.375rem;border:1px solid rgba(0,0,0,0.08);background:#fff;min-height:40px;font-size:0.95rem}
+.meal-actions{display:flex;flex-wrap:wrap;gap:6px}
+.meal-card{padding:0.5rem}
+.meal-card, .meal-actions button{touch-action:pan-y}
+.meal-card.swiping{transition:none}
+
+/* badge variants */
+.badge-free{background:#d1fae5; color:#065f46}
+.badge-skipped{background:#fee2e2; color:#7f1d1d}
+.badge-planned{background:#e0f2fe; color:#075985}
+.badge-alt{background:#fff7ed; color:#92400e}
+
+.meal-actions button[disabled]{opacity:0.5; cursor:not-allowed}
+
+.meal-card{will-change:transform}

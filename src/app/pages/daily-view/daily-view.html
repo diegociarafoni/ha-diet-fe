@@ -1,6 +1,8 @@
 <div class="daily-view">
   <div class="controls">
-    <label>Data: <input type="date" [value]="date" (change)="onDateChange($event)" /></label>
+    <label
+      >Data: <input type="date" [value]="date" (change)="onDateChange($any($event).target?.value)"
+    /></label>
   </div>
 
   <div *ngIf="loading">Caricamento...</div>
@@ -9,7 +11,13 @@
     <div class="hunger">
       <label>Fame:</label>
       <span *ngFor="let s of [1, 2, 3, 4, 5]">
-        <button (click)="setHunger(s)">{{ s }}</button>
+        <button
+          (click)="setHunger(s)"
+          [disabled]="!canWriteProfile()"
+          [attr.aria-disabled]="!canWriteProfile()"
+        >
+          {{ s }}
+        </button>
       </span>
     </div>
 
@@ -18,7 +26,9 @@
         <input
           type="checkbox"
           [checked]="dayData.snacks?.am?.done"
-          (change)="toggleSnack('am', $event.target.checked)"
+          (change)="toggleSnack('am', $any($event).target.checked)"
+          [disabled]="!canWriteProfile()"
+          [attr.aria-disabled]="!canWriteProfile()"
         />
         Spuntino AM
       </label>
@@ -26,7 +36,9 @@
         <input
           type="checkbox"
           [checked]="dayData.snacks?.pm?.done"
-          (change)="toggleSnack('pm', $event.target.checked)"
+          (change)="toggleSnack('pm', $any($event).target.checked)"
+          [disabled]="!canWriteProfile()"
+          [attr.aria-disabled]="!canWriteProfile()"
         />
         Spuntino PM
       </label>

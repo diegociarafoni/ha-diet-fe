@@ -9,6 +9,13 @@
   width: 100%;
   border-collapse: collapse;
 }
+.week-grid-wrapper{
+  overflow:auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+}
+.week-grid{min-width:900px}
 .week-grid th, .week-grid td{
   border: 1px solid #ddd;
   padding: 6px;
@@ -16,6 +23,13 @@
 }
 .meal-type{font-weight:600; text-transform:capitalize; width:110px}
 .meal-card{display:flex; flex-direction:column}
+.cell-focus-wrapper{outline:none; padding:6px; min-height:56px; border-radius:6px}
+.cell-focus-wrapper:focus{box-shadow:0 0 0 3px rgba(2,132,199,0.15);border-radius:6px}
+.cell-focus-wrapper{touch-action:pan-y}
+.cell-focus-wrapper{scroll-snap-align:start}
+
+/* make swap select easier to tap */
+select[id^="swap-select-"]{min-width:140px;padding:10px;border-radius:6px}
 .meal-header{display:flex; justify-content:space-between; align-items:center}
 .meal-badge{background:var(--badge-bg); padding:2px 6px; border-radius:4px; font-size:0.8em}
 .swap-ui{margin-top:6px}
@@ -30,3 +44,6 @@
   .meal-type{display:block; background:#fafafa; padding:6px;}
   .week-grid td{border:none; padding:8px 0}
 }
+
+.skeleton-box{height:36px;background:linear-gradient(90deg,#eee,#f5f5f5);border-radius:6px}
+.week-skeleton .meal-type{background:transparent}

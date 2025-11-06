@@ -12,8 +12,15 @@ import { ToastService } from '../../services/toast.service';
 })
 export class ConfigWeek implements OnInit {
   preview: any = null;
-
   constructor(private diet: DietService, private toast: ToastService) {}
+
+  get canWrite(): boolean {
+    const caps = this.diet.getCapabilitiesCached();
+    const pid = this.diet.getActiveProfileId();
+    if (!caps || pid == null) return false;
+    const p = caps.profiles.find((x: any) => x.profile_id === pid);
+    return !!p?.can_write;
+  }
 
   ngOnInit(): void {
     const pid = this.diet.getActiveProfileId();
@@ -37,8 +44,9 @@ export class ConfigWeek implements OnInit {
   }
 
   async applyTemplate() {
+    if (!this.canWrite) { this.toast.show('Permessi insufficienti per applicare template'); return; }
     const pid = this.diet.getActiveProfileId();
-    if (!pid) { alert('Nessun profilo attivo'); return; }
+    if (!pid) { this.toast.show('Nessun profilo attivo'); return; }
     const monday = this.getMondayISO(new Date());
     try {
       await this.diet.applyWeekTemplate(pid, monday);

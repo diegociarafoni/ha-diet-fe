@@ -56,8 +56,9 @@ export class DailyView implements OnInit, OnDestroy {
   }
 
   async setHunger(score: number) {
+    if (!this.canWriteProfile()) { this.toast.show('Permessi insufficienti per modificare la fame'); return; }
     const pid = this.diet.getActiveProfileId();
-    if (!pid) return;
+    if (!pid) { this.toast.show('Nessun profilo attivo'); return; }
     try {
       await this.diet.setHunger(pid, this.date, score);
       await this.loadDay(pid, this.date);
@@ -65,8 +66,9 @@ export class DailyView implements OnInit, OnDestroy {
   }
 
   async toggleSnack(period: 'am'|'pm', done: boolean) {
+    if (!this.canWriteProfile()) { this.toast.show('Permessi insufficienti per modificare snack'); return; }
     const pid = this.diet.getActiveProfileId();
-    if (!pid) return;
+    if (!pid) { this.toast.show('Nessun profilo attivo'); return; }
     try {
       await this.diet.setSnack(pid, this.date, period, done);
       await this.loadDay(pid, this.date);
@@ -74,8 +76,9 @@ export class DailyView implements OnInit, OnDestroy {
   }
 
   async onChoose(meal: any, payload: any) {
+    if (!this.canWriteProfile()) { this.toast.show('Permessi insufficienti per scegliere pasto'); return; }
     const pid = this.diet.getActiveProfileId();
-    if (!pid) return;
+    if (!pid) { this.toast.show('Nessun profilo attivo'); return; }
     try {
       if (payload.source === 'free') {
         const title = prompt('Titolo pasto free:');

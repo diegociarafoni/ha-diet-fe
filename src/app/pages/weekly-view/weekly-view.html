@@ -1,5 +1,7 @@
 <div class="weekly-view">
-  <div *ngIf="loading" class="loading" aria-busy="true" aria-live="polite">Caricamento settimana…</div>
+  <div *ngIf="loading" class="loading" aria-busy="true" aria-live="polite">
+    Caricamento settimana…
+  </div>
 
   <div *ngIf="!loading && week" class="week-loaded">
     <div style="display: flex; align-items: center; justify-content: space-between">
@@ -10,44 +12,80 @@
       <h3>Settimana di partenza: {{ week.start }}</h3>
       <div></div>
     </div>
+    <div class="week-grid-wrapper">
+      <table class="week-grid">
+        <thead>
+          <tr>
+            <th>Past</th>
+            <th *ngFor="let d of week.days">{{ d.date }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let mealType of mealTypes; let rowIdx = index">
+            <td class="meal-type">{{ mealLabel(mealType) }}</td>
+            <td *ngFor="let d of week.days; let colIdx = index">
+              <div *ngIf="d.meals">
+                <ng-container *ngFor="let m of d.meals">
+                  <div *ngIf="m.meal_type === mealType">
+                    <div
+                      id="cell-{{ rowIdx }}-{{ colIdx }}"
+                      class="cell-focus-wrapper"
+                      tabindex="0"
+                      role="button"
+                      aria-label="Pasto {{ mealLabel(m.meal_type) }} del {{ m.date }}"
+                      (keydown)="onCellKeydown($event, rowIdx, colIdx)"
+                    >
+                      <app-meal-card
+                        [meal]="m"
+                        [canWrite]="canWrite"
+                        (requestSwap)="startSwap(m)"
+                      ></app-meal-card>
+                    </div>
+
+                    <div
+                      *ngIf="
+                        swapState.meal?.date === m.date && swapState.meal?.meal_type === m.meal_type
+                      "
+                      class="swap-ui"
+                    >
+                      <label for="swap-select-{{ m.date }}-{{ m.meal_type }}">Scambia con:</label>
+                      <select
+                        id="swap-select-{{ m.date }}-{{ m.meal_type }}"
+                        (change)="confirmSwap($any($event.target).value)"
+                        (keydown.enter)="confirmSwap($any($event.target).value)"
+                        (keydown.escape)="cancelSwap()"
+                        aria-label="Seleziona data destinazione"
+                        style="width: 100%"
+                      >
+                        <option value="">seleziona...</option>
+                        <option *ngFor="let d2 of swapState.candidates" [value]="d2">
+                          {{ d2 }}
+                        </option>
+                      </select>
+                      <button (click)="cancelSwap()">Annulla</button>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="week-skeleton" aria-hidden="true">
     <table class="week-grid">
       <thead>
         <tr>
           <th>Past</th>
-          <th *ngFor="let d of week.days">{{ d.date }}</th>
+          <th *ngFor="let i of [1, 2, 3, 4, 5, 6, 7]">&nbsp;</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let mealType of ['breakfast', 'lunch', 'snack_am', 'snack_pm', 'dinner']">
-          <td class="meal-type">{{ mealType }}</td>
-          <td *ngFor="let d of week.days">
-            <div *ngIf="d.meals">
-              <ng-container *ngFor="let m of d.meals">
-                <div *ngIf="m.meal_type === mealType">
-                  <app-meal-card
-                    [meal]="m"
-                    [canWrite]="canWrite"
-                    aria-label="Pasto {{ m.meal_type }} {{ m.date }}"
-                    (requestSwap)="startSwap(m)"
-                  ></app-meal-card>
-
-                  <div
-                    *ngIf="
-                      swapState.meal?.date === m.date && swapState.meal?.meal_type === m.meal_type
-                    "
-                    class="swap-ui"
-                  >
-                    <label for="swap-select">Scambia con:</label>
-                    <select id="swap-select" (change)="confirmSwap($any($event.target).value)" aria-label="Seleziona data destinazione">
-                      <option value="">seleziona...</option>
-                      <option *ngFor="let d2 of swapState.candidates" [value]="d2">{{ d2 }}</option>
-                    </select>
-                    <button (click)="cancelSwap()">Annulla</button>
-                  </div>
-                </div>
-              </ng-container>
-            </div>
-          </td>
+        <tr *ngFor="let r of [1, 2, 3, 4, 5]">
+          <td class="meal-type">&nbsp;</td>
+          <td *ngFor="let c of [1, 2, 3, 4, 5, 6, 7]"><div class="skeleton-box"></div></td>
         </tr>
       </tbody>
     </table>

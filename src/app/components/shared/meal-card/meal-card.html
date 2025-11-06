@@ -1,13 +1,37 @@
-<div class="meal-card">
+<div
+  class="meal-card"
+  [class.swiping]="isSwiping"
+  [style.transform]="swipeTransform"
+  (pointerdown)="onPointerDown($event)"
+  (pointermove)="onPointerMove($event)"
+  (pointerup)="onPointerUp($event)"
+  (pointercancel)="onPointerCancel($event)"
+>
   <div class="meal-header">
     <span class="meal-title">{{ title }}</span>
-    <span class="meal-badge">{{ badge }}</span>
+    <span class="meal-badge" [ngClass]="badge ? 'badge-' + badge.toLowerCase() : ''">{{
+      badge
+    }}</span>
   </div>
   <div class="meal-actions">
-    <button *ngIf="canWrite" (click)="doChoose('proposed')">Proposto</button>
-    <button *ngIf="canWrite" (click)="doChoose('alternative')">Alternativa</button>
-    <button *ngIf="canWrite" (click)="doChoose('free')">Free</button>
-    <button *ngIf="canWrite" (click)="doSwap()">Scambia</button>
-    <button *ngIf="canWrite" (click)="doCopy()">Copia</button>
+    <button (click)="doChoose('proposed')" [disabled]="!canWrite" [attr.aria-disabled]="!canWrite">
+      Proposto
+    </button>
+    <button
+      (click)="doChoose('alternative')"
+      [disabled]="!canWrite"
+      [attr.aria-disabled]="!canWrite"
+    >
+      Alternativa
+    </button>
+    <button (click)="doChoose('free')" [disabled]="!canWrite" [attr.aria-disabled]="!canWrite">
+      Free
+    </button>
+    <button (click)="doSwap()" [disabled]="!canWrite" [attr.aria-disabled]="!canWrite">
+      Scambia
+    </button>
+    <button (click)="doCopy()" [disabled]="!canWrite" [attr.aria-disabled]="!canWrite">
+      Copia
+    </button>
   </div>
 </div>
