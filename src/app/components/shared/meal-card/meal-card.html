@@ -9,32 +9,14 @@
 >
   <div class="meal-header">
     <span class="meal-title">{{ title }}</span>
-    <span class="meal-badge" [ngClass]="badge ? 'badge-' + badge.toLowerCase() : ''">{{
-      badge
-    }}</span>
+    <span class="meal-badge" [ngClass]="badge ? 'badge-' + badge.toLowerCase() : ''">{{ badge }}</span>
   </div>
-  <div *ngIf="showSwipeHint" class="swipe-hint" aria-hidden="true">
-    Scorri a sinistra per scambiare ▶
-  </div>
+  <div *ngIf="showSwipeHint" class="swipe-hint" aria-hidden="true">{{ 'meal.swipe_hint' | translate }}</div>
   <div class="meal-actions">
-    <button (click)="doChoose('proposed')" [disabled]="!canWrite" [attr.aria-disabled]="!canWrite">
-      Proposto
-    </button>
-    <button
-      (click)="doChoose('alternative')"
-      [disabled]="!canWrite"
-      [attr.aria-disabled]="!canWrite"
-    >
-      Alternativa
-    </button>
-    <button (click)="doChoose('free')" [disabled]="!canWrite" [attr.aria-disabled]="!canWrite">
-      Free
-    </button>
-    <button (click)="doSwap()" [disabled]="!canWrite" [attr.aria-disabled]="!canWrite">
-      Scambia
-    </button>
-    <button (click)="doCopy()" [disabled]="!canWrite" [attr.aria-disabled]="!canWrite">
-      Copia
-    </button>
+    <button (click)="doChoose('proposed')" [disabled]="!canWrite" [attr.aria-disabled]="!canWrite">{{ 'meal.button.proposed' | translate }}</button>
+    <button (click)="doChoose('alternative')" [disabled]="!canWrite" [attr.aria-disabled]="!canWrite">{{ 'meal.button.alternative' | translate }}</button>
+    <button (click)="doChoose('free')" [disabled]="!canWrite" [attr.aria-disabled]="!canWrite">{{ 'meal.button.free' | translate }}</button>
+    <button (click)="doSwap()" [disabled]="!canWrite" [attr.aria-disabled]="!canWrite">{{ 'meal.button.swap' | translate }}</button>
+    <button (click)="doCopy()" [disabled]="!canWrite" [attr.aria-disabled]="!canWrite">{{ 'meal.button.copy' | translate }}</button>
   </div>
 </div>

@@ -1,0 +1,27 @@
+{
+  "app.title": "HA Diet",
+  "meal.button.proposed": "Proposto",
+  "meal.button.alternative": "Alternativa",
+  "meal.button.free": "Free",
+  "meal.button.swap": "Scambia",
+  "meal.button.copy": "Copia",
+  "meal.swipe_hint": "Scorri a sinistra per scambiare ▶",
+  "meal.labels.breakfast": "Colazione",
+  "meal.labels.lunch": "Pranzo",
+  "meal.labels.snack_am": "Spuntino AM",
+  "meal.labels.snack_pm": "Spuntino PM",
+  "meal.labels.dinner": "Cena",
+  "message.no_active_profile": "Nessun profilo attivo",
+  "message.destination_must_be_future": "La data di destinazione deve essere successiva",
+  "message.destination_same_week": "La data di destinazione deve essere nella stessa settimana",
+  "message.swap_done": "Scambio effettuato",
+  "message.insufficient_permissions": "Permessi insufficienti",
+  "message.error_swap": "Errore nello scambio"
+  ,"meal.aria.meal":"Pasto {type} del {date}",
+  "swap.label":"Scambia con:",
+  "swap.select_placeholder":"seleziona...",
+  "swap.cancel":"Annulla",
+  "table.past":"Past",
+  "no_week_loaded":"Nessuna settimana caricata (seleziona un profilo).",
+  "prompt.enter_destination":"Inserisci data di destinazione (YYYY-MM-DD) — deve essere successiva nella stessa settimana"
+}

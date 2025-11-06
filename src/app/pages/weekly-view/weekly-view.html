@@ -16,13 +16,13 @@
       <table class="week-grid">
         <thead>
           <tr>
-            <th>Past</th>
+            <th>{{ 'table.past' | translate }}</th>
             <th *ngFor="let d of week.days">{{ d.date }}</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let mealType of mealTypes; let rowIdx = index">
-            <td class="meal-type">{{ mealLabel(mealType) }}</td>
+            <td class="meal-type">{{ mealLabel(mealType) | translate }}</td>
             <td *ngFor="let d of week.days; let colIdx = index">
               <div *ngIf="d.meals">
                 <ng-container *ngFor="let m of d.meals">
@@ -32,7 +32,7 @@
                       class="cell-focus-wrapper"
                       tabindex="0"
                       role="button"
-                      aria-label="Pasto {{ mealLabel(m.meal_type) }} del {{ m.date }}"
+                      aria-label="{{ 'meal.aria.meal' | translate:{ type: (mealLabel(m.meal_type) | translate), date: m.date } }}"
                       (keydown)="onCellKeydown($event, rowIdx, colIdx)"
                     >
                       <app-meal-card
@@ -48,7 +48,7 @@
                       "
                       class="swap-ui"
                     >
-                      <label for="swap-select-{{ m.date }}-{{ m.meal_type }}">Scambia con:</label>
+                      <label for="swap-select-{{ m.date }}-{{ m.meal_type }}">{{ 'swap.label' | translate }}</label>
                       <select
                         id="swap-select-{{ m.date }}-{{ m.meal_type }}"
                         (change)="confirmSwap($any($event.target).value)"
@@ -57,12 +57,12 @@
                         aria-label="Seleziona data destinazione"
                         style="width: 100%"
                       >
-                        <option value="">seleziona...</option>
+                        <option value="">{{ 'swap.select_placeholder' | translate }}</option>
                         <option *ngFor="let d2 of swapState.candidates" [value]="d2">
                           {{ d2 }}
                         </option>
                       </select>
-                      <button (click)="cancelSwap()">Annulla</button>
+                      <button (click)="cancelSwap()">{{ 'swap.cancel' | translate }}</button>
                     </div>
                   </div>
                 </ng-container>

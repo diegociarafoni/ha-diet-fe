@@ -2,13 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DietService } from '../../services/diet';
 import { ToastService } from '../../services/toast.service';
+import { TranslateService } from '../../services/translate.service';
 import { Subscription, switchMap, of } from 'rxjs';
 import { MealCard } from '../../components/shared/meal-card/meal-card';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-weekly-view',
   standalone: true,
-  imports: [CommonModule, MealCard],
+  imports: [CommonModule, MealCard, TranslatePipe],
   templateUrl: './weekly-view.html',
   styleUrls: ['./weekly-view.scss'],
 })
@@ -22,7 +24,8 @@ export class WeeklyView implements OnInit, OnDestroy {
   // ordered meal types for rows and labels
   mealTypes = ['breakfast', 'lunch', 'snack_am', 'snack_pm', 'dinner'];
 
-  constructor(private diet: DietService, private toast: ToastService) {}
+  constructor(private diet: DietService, private toast: ToastService, private translate: TranslateService) {}
+
 
   ngOnInit(): void {
     // ricarica la settimana quando cambia il profilo attivo
@@ -62,14 +65,7 @@ export class WeeklyView implements OnInit, OnDestroy {
   }
 
   mealLabel(type: string) {
-    const map: Record<string,string> = {
-      breakfast: 'Colazione',
-      lunch: 'Pranzo',
-      snack_am: 'Spuntino AM',
-      snack_pm: 'Spuntino PM',
-      dinner: 'Cena'
-    };
-    return map[type] ?? type;
+    return `meal.labels.${type}`;
   }
 
   onCellKeydown(ev: KeyboardEvent, row: number, col: number) {
@@ -92,34 +88,34 @@ export class WeeklyView implements OnInit, OnDestroy {
 
   async onSwap(meal: any) {
     const pid = this.diet.getActiveProfileId();
-  if (!pid) { this.toast.show('Nessun profilo attivo'); return; }
+  if (!pid) { this.toast.show(this.translate.instant('message.no_active_profile')); return; }
     const dateFrom = meal.date;
-    const dateTo = prompt('Inserisci data di destinazione (YYYY-MM-DD) — deve essere successiva nella stessa settimana');
+    const dateTo = prompt(this.translate.instant('prompt.enter_destination'));
     if (!dateTo) return;
     try {
       const dFrom = new Date(dateFrom);
       const dTo = new Date(dateTo);
-  if (dTo <= dFrom) { this.toast.show('La data di destinazione deve essere successiva'); return; }
+  if (dTo <= dFrom) { this.toast.show(this.translate.instant('message.destination_must_be_future')); return; }
       // semplice check: same week start
       const weekStart = this.getMondayISO(new Date());
   const monday = new Date(weekStart);
       const end = new Date(monday);
       end.setDate(monday.getDate() + 6);
-  if (dTo < monday || dTo > end) { this.toast.show('La data di destinazione deve essere nella stessa settimana'); return; }
+  if (dTo < monday || dTo > end) { this.toast.show(this.translate.instant('message.destination_same_week')); return; }
       await this.diet.swapMeal(pid, dateFrom, dateTo, meal.meal_type);
       // refresh
       const mondayIso = this.getMondayISO(new Date());
       this.week = await this.diet.getWeek(pid, mondayIso);
-  this.toast.show('Scambio effettuato');
+  this.toast.show(this.translate.instant('message.swap_done'));
     } catch (err: any) {
       console.error(err);
-      alert(err?.message || 'Errore nello scambio');
+      this.toast.show(err?.message || this.translate.instant('message.error_swap'));
     }
   }
 
   startSwap(meal: any) {
     // guard: only allow starting swap when profile can write
-    if (!this.canWrite) { this.toast.show('Permessi insufficienti per effettuare scambi'); return; }
+  if (!this.canWrite) { this.toast.show(this.translate.instant('message.insufficient_permissions')); return; }
 
     // compute candidate dates: days after meal.date in the same week (Monday..Sunday)
     const weekStart = new Date(this.currentMondayISO);
@@ -145,15 +141,15 @@ export class WeeklyView implements OnInit, OnDestroy {
     if (!this.swapState.meal) return;
     const meal = this.swapState.meal;
     const pid = this.diet.getActiveProfileId();
-    if (!pid) { this.toast.show('Nessun profilo attivo'); this.swapState = {}; return; }
+    if (!pid) { this.toast.show(this.translate.instant('message.no_active_profile')); this.swapState = {}; return; }
     try {
       await this.diet.swapMeal(pid, meal.date, targetDate, meal.meal_type);
-      this.toast.show('Scambio effettuato');
+      this.toast.show(this.translate.instant('message.swap_done'));
       this.swapState = {};
       this.week = await this.diet.getWeek(pid, this.currentMondayISO);
     } catch (err: any) {
       console.error(err);
-      this.toast.show(err?.message || 'Errore nello scambio');
+      this.toast.show(err?.message || this.translate.instant('message.error_swap'));
     }
   }
 

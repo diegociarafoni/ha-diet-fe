@@ -1,0 +1,27 @@
+{
+  "app.title": "HA Diet",
+  "meal.button.proposed": "Proposed",
+  "meal.button.alternative": "Alternative",
+  "meal.button.free": "Free",
+  "meal.button.swap": "Swap",
+  "meal.button.copy": "Copy",
+  "meal.swipe_hint": "Swipe left to swap ▶",
+  "meal.labels.breakfast": "Breakfast",
+  "meal.labels.lunch": "Lunch",
+  "meal.labels.snack_am": "AM Snack",
+  "meal.labels.snack_pm": "PM Snack",
+  "meal.labels.dinner": "Dinner",
+  "message.no_active_profile": "No active profile",
+  "message.destination_must_be_future": "Destination date must be later",
+  "message.destination_same_week": "Destination must be in the same week",
+  "message.swap_done": "Swap completed",
+  "message.insufficient_permissions": "Insufficient permissions",
+  "message.error_swap": "Error while swapping"
+  ,"meal.aria.meal":"Meal {type} of {date}",
+  "swap.label":"Swap with:",
+  "swap.select_placeholder":"select...",
+  "swap.cancel":"Cancel",
+  "table.past":"Past",
+  "no_week_loaded":"No week loaded (select a profile).",
+  "prompt.enter_destination":"Enter destination date (YYYY-MM-DD) — must be later in the same week"
+}
