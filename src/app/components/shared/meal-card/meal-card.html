@@ -1,0 +1,13 @@
+<div class="meal-card">
+  <div class="meal-header">
+    <span class="meal-title">{{ title }}</span>
+    <span class="meal-badge">{{ badge }}</span>
+  </div>
+  <div class="meal-actions">
+    <button *ngIf="canWrite" (click)="doChoose('proposed')">Proposto</button>
+    <button *ngIf="canWrite" (click)="doChoose('alternative')">Alternativa</button>
+    <button *ngIf="canWrite" (click)="doChoose('free')">Free</button>
+    <button *ngIf="canWrite" (click)="doSwap()">Scambia</button>
+    <button *ngIf="canWrite" (click)="doCopy()">Copia</button>
+  </div>
+</div>

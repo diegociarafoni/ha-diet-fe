@@ -1,0 +1,16 @@
+<div class="profile-selector">
+  <ng-container *ngIf="caps$ | async as caps">
+    <label for="profile-select">Profilo:</label>
+    <select
+      id="profile-select"
+      [value]="(active$ | async) ?? ''"
+      (change)="change($any($event.target).value)"
+      aria-label="Seleziona profilo"
+    >
+      <option value="">—</option>
+      <option *ngFor="let p of caps.profiles" [value]="p.profile_id" [disabled]="!p.can_read">
+        {{ p.display_name }}{{ p.can_write ? '' : ' (RO)' }}
+      </option>
+    </select>
+  </ng-container>
+</div>

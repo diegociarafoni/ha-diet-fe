@@ -1,0 +1,47 @@
+<div class="daily-view">
+  <div class="controls">
+    <label>Data: <input type="date" [value]="date" (change)="onDateChange($event)" /></label>
+  </div>
+
+  <div *ngIf="loading">Caricamento...</div>
+
+  <div *ngIf="!loading && dayData">
+    <div class="hunger">
+      <label>Fame:</label>
+      <span *ngFor="let s of [1, 2, 3, 4, 5]">
+        <button (click)="setHunger(s)">{{ s }}</button>
+      </span>
+    </div>
+
+    <div class="snacks">
+      <label>
+        <input
+          type="checkbox"
+          [checked]="dayData.snacks?.am?.done"
+          (change)="toggleSnack('am', $event.target.checked)"
+        />
+        Spuntino AM
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          [checked]="dayData.snacks?.pm?.done"
+          (change)="toggleSnack('pm', $event.target.checked)"
+        />
+        Spuntino PM
+      </label>
+    </div>
+
+    <div class="meals">
+      <ng-container *ngFor="let m of dayData.meals">
+        <app-meal-card
+          [meal]="m"
+          [canWrite]="canWriteProfile()"
+          (chooseSource)="onChoose(m, $event)"
+        ></app-meal-card>
+      </ng-container>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !dayData">Nessun dato per il giorno selezionato.</div>
+</div>

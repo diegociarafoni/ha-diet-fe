@@ -1,0 +1,57 @@
+<div class="weekly-view">
+  <div *ngIf="loading" class="loading" aria-busy="true" aria-live="polite">Caricamento settimana…</div>
+
+  <div *ngIf="!loading && week" class="week-loaded">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <div>
+        <button (click)="prevWeek()">‹ Prev</button>
+        <button (click)="nextWeek()">Next ›</button>
+      </div>
+      <h3>Settimana di partenza: {{ week.start }}</h3>
+      <div></div>
+    </div>
+    <table class="week-grid">
+      <thead>
+        <tr>
+          <th>Past</th>
+          <th *ngFor="let d of week.days">{{ d.date }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mealType of ['breakfast', 'lunch', 'snack_am', 'snack_pm', 'dinner']">
+          <td class="meal-type">{{ mealType }}</td>
+          <td *ngFor="let d of week.days">
+            <div *ngIf="d.meals">
+              <ng-container *ngFor="let m of d.meals">
+                <div *ngIf="m.meal_type === mealType">
+                  <app-meal-card
+                    [meal]="m"
+                    [canWrite]="canWrite"
+                    aria-label="Pasto {{ m.meal_type }} {{ m.date }}"
+                    (requestSwap)="startSwap(m)"
+                  ></app-meal-card>
+
+                  <div
+                    *ngIf="
+                      swapState.meal?.date === m.date && swapState.meal?.meal_type === m.meal_type
+                    "
+                    class="swap-ui"
+                  >
+                    <label for="swap-select">Scambia con:</label>
+                    <select id="swap-select" (change)="confirmSwap($any($event.target).value)" aria-label="Seleziona data destinazione">
+                      <option value="">seleziona...</option>
+                      <option *ngFor="let d2 of swapState.candidates" [value]="d2">{{ d2 }}</option>
+                    </select>
+                    <button (click)="cancelSwap()">Annulla</button>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!loading && !week">Nessuna settimana caricata (seleziona un profilo).</div>
+</div>

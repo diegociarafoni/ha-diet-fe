@@ -1,0 +1,14 @@
+<div class="config-week">
+  <h3>Preview settimana standard</h3>
+  <div *ngIf="preview">
+    <div>Start: {{ preview.start }}</div>
+    <div *ngFor="let d of preview.days">
+      <h4>{{ d.date }}</h4>
+      <div *ngFor="let m of d.meals">
+        {{ m.meal_type }} — {{ m.proposed?.title || m.chosen?.title || '—' }}
+      </div>
+    </div>
+  </div>
+
+  <button (click)="applyTemplate()">Applica template alla settimana corrente</button>
+</div>

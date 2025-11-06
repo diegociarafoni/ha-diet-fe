@@ -1,0 +1,21 @@
+<div class="common-view">
+  <div class="profile-list">
+    <label *ngFor="let p of profiles">
+      <input
+        type="checkbox"
+        [checked]="selected.includes(p.profile_id)"
+        (change)="toggleProfile(p.profile_id, $event.target.checked)"
+      />
+      {{ p.display_name }}
+    </label>
+  </div>
+
+  <div class="upcoming">
+    <div *ngFor="let prof of upcoming">
+      <h4>{{ prof.display_name }}</h4>
+      <div *ngFor="let u of prof.upcoming">
+        <div>{{ u.type }} - {{ u.date }} - {{ u.title }} - {{ u.status }}</div>
+      </div>
+    </div>
+  </div>
+</div>
